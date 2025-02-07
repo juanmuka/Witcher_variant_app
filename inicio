@@ -1,0 +1,70 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import "@fontsource/medievalsharp"; // Usar una fuente similar temática
+
+export default function WitcherGoldApp() {
+  const [gold, setGold] = useState("");
+  const [craft, setCraft] = useState("");
+  const [dialogContent, setDialogContent] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const generateGold = () => {
+    const randomGold = Math.floor(Math.random() * 4) + 1;
+    setDialogContent(`Ganas ${randomGold} de oro`);
+    setIsDialogOpen(true);
+  };
+
+  const craftItem = () => {
+    const randomPotions = Math.floor(Math.random() * 3) + 1;
+    const isPotion = Math.random() < 0.7; // 70% de probabilidad de crear pociones
+
+    if (isPotion) {
+      setDialogContent(`Has creado ${randomPotions} pociones`);
+    } else {
+      setDialogContent("Has creado una Bomba");
+    }
+    setIsDialogOpen(true);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4 gap-4" style={{ fontFamily: 'MedievalSharp, sans-serif' }}>
+      <h1 className="text-2xl font-extrabold mb-4 text-center">
+        The Witcher Old World Fase II
+      </h1>
+      <div className="flex flex-col gap-4 w-full items-center">
+        <Card className="w-80 text-center border border-gray-700 rounded-lg shadow-lg">
+          <CardHeader className="bg-gray-800 text-white p-3 text-lg font-bold rounded-t-lg">
+            Poker de Dados
+          </CardHeader>
+          <CardContent className="p-3">
+            <Button onClick={generateGold} className="w-full bg-blue-600 hover:bg-blue-700">
+              Generar Oro
+            </Button>
+          </CardContent>
+        </Card>
+        
+        <Card className="w-80 text-center border border-gray-700 rounded-lg shadow-lg">
+          <CardHeader className="bg-gray-800 text-white p-3 text-lg font-bold rounded-t-lg">
+            Crafteo de Brujo
+          </CardHeader>
+          <CardContent className="p-3">
+            <Button onClick={craftItem} className="w-full bg-green-600 hover:bg-green-700">
+              Craftear
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-gray-800 text-white p-6 rounded-lg shadow-lg text-center">
+          <DialogHeader>
+            <DialogTitle>Resultado</DialogTitle>
+          </DialogHeader>
+          <p className="text-lg">{dialogContent}</p>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
